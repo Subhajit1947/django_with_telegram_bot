@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from .tasks import send_welcome_email
 User=get_user_model()
 class UserSerializers(serializers.ModelSerializer):
    
@@ -16,6 +17,7 @@ class UserSerializers(serializers.ModelSerializer):
             first_name=validated_data.get('first_name', ''),
             last_name=validated_data.get('last_name', '')
         )
+        send_welcome_email.delay(str(user.email))
         return user
        
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
