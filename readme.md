@@ -1,8 +1,11 @@
-# 🧠 Telegram Post Bot API
+# Telegram Post Bot API
 
-A Django-based platform integrated with a Telegram bot that allows users to register, log in, and manage posts. It uses Celery for background tasks like sending welcome emails and JWT for secure authentication.
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://www.python.org/)
+[![Django](https://img.shields.io/badge/Django-4.2-brightgreen)](https://www.djangoproject.com/)
+[![DRF](https://img.shields.io/badge/Django%20REST%20Framework-3.14-red)](https://www.django-rest-framework.org/)
 
----
+
+A robust Django backend system with Telegram bot integration for user authentication and post management.
 
 ## 🚀 Features
 
@@ -24,6 +27,72 @@ A Django-based platform integrated with a Telegram bot that allows users to regi
 - Simple JWT
 
 ---
+
+
+## 🚀 Getting Started(Locally)
+
+### Prerequisites
+
+- Python 3.10+
+- Redis server
+- Mailpit
+- Telegram bot token from [@BotFather](https://t.me/BotFather)
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Subhajit1947/django_with_telegram_bot
+   ```
+2. Create and activate virtual environment:
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # Linux/Mac
+    venv\Scripts\activate.ps1  # Windows
+    ```
+3. Install dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
+4. Create a .env file in root directory and add configuration:
+    ```bash
+    SECRET_KEY = ''
+    EMAIL_BACKEND = ''  
+    EMAIL_PORT=""
+    EMAIL_HOST=""
+    DEFAULT_FROM_EMAIL=""
+    CELERY_BROKER_URL=''
+    CELERY_RESULT_BACKEND=''
+    TELEGRAM_BOT_TOKEN=''
+    ```
+5. Run migrations,migrate,createsuperuser:
+    ```bash
+    python manage.py makegirations
+    python manage.py migrate
+    python manage.py createsuperuser
+    ```
+6. Start Development Server:
+    ```bash
+    python manage.py runserver 0.0.0.0:8000 
+    ```
+7. Run Celery:
+    ```bash
+    celery -A config worker --pool=solo -l info
+    ```
+8. Create a LocalTunnel (nodejs must be install):
+    ```bash
+    npm install -g localtunnel 
+    lt --port 8000 --subdomain mybot  
+    ``` 
+    after run this command you get a https url
+9. Set Webhook (put https url in yourdomain)
+    ```shell
+    requests.post(
+        "https://api.telegram.org/bot<YOUR_BOT_TOKEN>/setWebhook",
+        json={"url": "https://yourdomain.com/telegram/webhook/"}
+    )
+    ```
+
 
 
 ---
@@ -55,20 +124,4 @@ A Django-based platform integrated with a Telegram bot that allows users to regi
 - Users are registered via `/start` command.
 - Registered Telegram users are saved in the DB.
 - Welcome message is sent via `sendMessage`.
-
-### Set Webhook
-```shell
-requests.post(
-    "https://api.telegram.org/bot<YOUR_BOT_TOKEN>/setWebhook",
-    json={"url": "https://yourdomain.com/telegram/webhook/"}
-)
-```
-### 📧 Celery Email Task
-
-A welcome email is sent automatically when a new user registers using the registration API.
-
-### 🟢 Run Celery
-
-```bash
-celery -A config worker --pool=solo -l info
 
