@@ -5,7 +5,8 @@ from .views import (
     PostRetrieveAPIView,
     PostUpdateAPIView,  # Don't forget to include the update view
     PostDestroyAPIView,
-    MyPostListAPIView
+    MyPostListAPIView,
+    telegram_webhook
 )
 
 urlpatterns = [
@@ -20,4 +21,5 @@ urlpatterns = [
     
 
     path('me/posts/', MyPostListAPIView.as_view(), name='my-post-list'),
+    path('telegram/webhook/', telegram_webhook, name='telegram_webhook'),
 ]
